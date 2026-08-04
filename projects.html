@@ -5,7 +5,27 @@
 <header class="hero"><h1>Projects</h1></header>
 <main class="wrap">
 <h2 class="sec">💰 Funded Projects</h2><hr class="rule">
-<table class="tbl"><tr><th>Project</th><th>Funding</th><th>PI</th><th>Status</th><th>Years</th></tr><tr><td>Beam design for beam-squint mitigation and exploitation in terahertz communication systems</td><td>NRF</td><td>J. H. Lee</td><td>Ongoing</td><td>2026–2029</td></tr><tr><td>Low-complexity wireless communication systems inspired by distributed computing and complexity theory</td><td>NRF</td><td>K. Son</td><td>Ongoing</td><td>2026–2029</td></tr><tr><td>Beamforming for beam-squint mitigation in LEO satellite communication systems</td><td>ETRI</td><td>J. H. Lee, K. Son</td><td>Ongoing</td><td>2024</td></tr></table>
+<style>
+.db2ctrls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 12px}
+.db2ctrls input{padding:7px 10px;border:1px solid #d5d8dd;border-radius:8px;font-size:14px;min-width:220px}
+.db2ctrls .lbl{font-size:13px;color:#6b7280;margin-left:4px}
+.db2ctrls button{padding:5px 12px;border:1px solid #cdd8e6;background:#fff;border-radius:20px;font-size:13px;cursor:pointer;margin-left:4px}
+.db2ctrls button.active{background:#1f2f4d;color:#fff;border-color:#1f2f4d}
+.db2ctrls .cnt{color:#6b7280;font-size:13px;margin-left:auto}
+.db2wrap{overflow:auto;border:1px solid #e5e7eb;border-radius:10px}
+table.db2{width:100%;margin:0}
+table.db2 th{position:sticky;top:0;background:#f6f8fb;cursor:pointer;white-space:nowrap;z-index:1}
+table.db2 th:after{content:"\2195";opacity:.4;margin-left:4px;font-size:11px}
+</style>
+<div class="db2ctrls">
+<input type="text" placeholder="Search projects…" data-search="proj-table">
+<span class="lbl">PI:</span>
+<button class="active" data-f="">All</button>
+<button data-f="J. H. Lee">J. H. Lee</button>
+<button data-f="K. Son">K. Son</button>
+<span class="cnt" id="proj-cnt"></span>
+</div>
+<div class="db2wrap"><table class="tbl db2" id="proj-table"><tr><th>Project</th><th>Funding</th><th>PI</th><th>Status</th><th>Years</th></tr><tr><td>Beam design for beam-squint mitigation and exploitation in terahertz communication systems</td><td>NRF</td><td>J. H. Lee</td><td>Ongoing</td><td>2026–2029</td></tr><tr><td>Low-complexity wireless communication systems inspired by distributed computing and complexity theory</td><td>NRF</td><td>K. Son</td><td>Ongoing</td><td>2026–2029</td></tr><tr><td>Beamforming for beam-squint mitigation in LEO satellite communication systems</td><td>ETRI</td><td>J. H. Lee, K. Son</td><td>Ongoing</td><td>2024</td></tr></table></div>
 <p class="muted">National Research Foundation (NRF) grants and ETRI collaborative research. See the lab for the full project history.</p>
 <h2 class="sec">🧩 Research Thrusts (ongoing)</h2><hr class="rule">
 <ul class="clean">
@@ -16,4 +36,20 @@
 </ul>
 </main>
 <footer>📍 81 Oedae-ro, Engineering Building, HUFS Global Campus, Yongin 17035, Gyeonggi-do, South Korea</footer>
+<script>
+(function(){
+ var tbl=document.getElementById('proj-table'); if(!tbl)return;
+ var rowsAll=Array.from(tbl.rows), header=rowsAll[0], rows=rowsAll.slice(1);
+ var filterCol=2, cnt=document.getElementById('proj-cnt'), q='', fv='';
+ var yearCol={4:true};
+ function val(r,i){return r.cells[i]?r.cells[i].textContent.trim():'';}
+ function apply(){var n=0;rows.forEach(function(r){var ok=true;if(fv&&val(r,filterCol).indexOf(fv)<0)ok=false;if(ok&&q&&r.textContent.toLowerCase().indexOf(q)<0)ok=false;r.style.display=ok?'':'none';if(ok)n++;});if(cnt)cnt.textContent=n+' of '+rows.length;}
+ var dir={};
+ Array.from(header.cells).forEach(function(th,i){th.addEventListener('click',function(){dir[i]=dir[i]===1?-1:1;var d=dir[i];rows.sort(function(a,b){var x=val(a,i),y=val(b,i);if(yearCol[i]){x=parseInt((x.match(/\d{4}/)||[0])[0])||0;y=parseInt((y.match(/\d{4}/)||[0])[0])||0;}if(x<y)return -1*d;if(x>y)return 1*d;return 0;});rows.forEach(function(r){tbl.appendChild(r);});});});
+ var si=document.querySelector('[data-search="proj-table"]');
+ if(si)si.addEventListener('input',function(e){q=e.target.value.toLowerCase().trim();apply();});
+ document.querySelectorAll('.db2ctrls button').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('.db2ctrls button').forEach(function(x){x.classList.remove('active');});b.classList.add('active');fv=b.getAttribute('data-f');apply();});});
+ apply();
+})();
+</script>
 </body></html>
