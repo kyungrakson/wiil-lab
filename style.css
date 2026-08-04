@@ -1,4 +1,5 @@
 /* WIIL — Wireless Information and Intelligence Laboratory */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendard-variable.css");
 :root{
   --ink:#1f2328; --muted:#57606a; --line:#e3e6ea; --bg:#ffffff; --soft:#f6f8fa;
   --accent:#2b3a55; --link:#1f6feb;
@@ -11,7 +12,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,Helvetica,Arial,sans-serif;
+body{margin:0;font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,Helvetica,Arial,sans-serif;
   color:var(--ink);line-height:1.65;background:var(--bg);font-size:16px}
 a{color:var(--link);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -40,23 +41,23 @@ ul.clean li{margin:6px 0}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .cards.one{grid-template-columns:1fr}
 @media(max-width:760px){.cards{grid-template-columns:1fr}}
-.card{border:1px solid var(--line);border-left:5px solid var(--gray-bd);background:var(--soft);border-radius:10px;padding:24px 26px}
+.card{border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:24px 26px}
 .card h3{margin-bottom:14px;font-size:18px}
 .card p{margin:9px 0;font-size:14.7px}
 .card .kv{font-size:14.5px;color:#3a3f46;line-height:2.15}
 .card .kv b{color:#1f2a3a}
-.blue{background:var(--blue-bg);border-left-color:var(--blue-bd)}
-.green{background:var(--green-bg);border-left-color:var(--green-bd)}
-.purple{background:var(--purple-bg);border-left-color:var(--purple-bd)}
-.orange{background:var(--orange-bg);border-left-color:var(--orange-bd)}
-.red{background:var(--red-bg);border-left-color:var(--red-bd)}
-.gray{background:var(--gray-bg);border-left-color:var(--gray-bd)}
+.blue{background:var(--blue-bg);border-color:#cfe0f5}
+.green{background:var(--green-bg);border-color:#c6e6d3}
+.purple{background:var(--purple-bg);border-color:#ddcef4}
+.orange{background:var(--orange-bg);border-color:#f5ddc0}
+.red{background:var(--red-bg);border-color:#f3cccc}
+.gray{background:var(--gray-bg);border-color:#dcdfe3}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
 .tile{border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;background:var(--soft)}
 .tile .big{font-size:30px;font-weight:800;color:var(--accent)}
 .tile .lbl{font-size:13.5px;color:var(--muted);margin-top:2px}
-.callout{border:1px solid var(--line);border-left:5px solid var(--gray-bd);background:var(--soft);border-radius:10px;padding:14px 18px;margin:14px 0}
+.callout{border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:16px 20px;margin:14px 0}
 .callout h3{margin-top:0}
 table.tbl{border-collapse:collapse;width:100%;margin:10px 0 4px;font-size:14.5px}
 table.tbl th,table.tbl td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
