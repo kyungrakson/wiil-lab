@@ -5,6 +5,47 @@
 <header class="hero"><h1>Publications</h1></header>
 <main class="wrap">
 <p class="muted">WIIL faculty in <b>bold</b>. Compiled from both PIs' Google Scholar profiles (<a href="https://scholar.google.com/citations?user=6eWvetIAAAAJ">J. H. Lee</a> · <a href="https://scholar.google.com/citations?user=5z4yXYYAAAAJ">K. Son</a>). Titles link to the publisher page where available.</p>
+<style>
+.pub-db{margin:0 0 34px}
+.pub-db .db-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 12px}
+.pub-db input#db-search{padding:7px 10px;border:1px solid #d5d8dd;border-radius:8px;font-size:14px;min-width:230px}
+.pub-db select#db-type{padding:7px 10px;border:1px solid #d5d8dd;border-radius:8px;font-size:14px}
+.pub-db .db-authlbl{font-size:13px;color:#6b7280;margin-left:4px}
+.pub-db .db-auth{padding:5px 12px;border:1px solid #cdd8e6;background:#fff;border-radius:20px;font-size:13px;cursor:pointer;margin-left:4px}
+.pub-db .db-auth.active{background:#1f2f4d;color:#fff;border-color:#1f2f4d}
+.pub-db .db-tablewrap{overflow-x:auto;border:1px solid #e5e7eb;border-radius:10px;max-height:560px}
+.pub-db table{border-collapse:collapse;width:100%;font-size:13.5px}
+.pub-db th,.pub-db td{padding:8px 10px;border-bottom:1px solid #eef0f3;text-align:left;vertical-align:top}
+.pub-db thead th{background:#f6f8fb;position:sticky;top:0;font-weight:600;white-space:nowrap;z-index:1}
+.pub-db th.sortable{cursor:pointer}
+.pub-db th.sortable:after{content:"\2195";opacity:.4;margin-left:4px;font-size:11px}
+.pub-db tbody tr:hover{background:#fafbfc}
+.pub-db td.c-title{min-width:280px}
+.pub-db td.c-auth{min-width:150px}
+.pub-db #db-count{color:#6b7280;font-size:13px;margin-left:auto}
+</style>
+<div class="pub-db">
+<h2 class="sec">Publications Database</h2><hr class="rule">
+<div class="db-controls">
+<input id="db-search" type="text" placeholder="Search title, author, venue…">
+<select id="db-type"><option value="">All types</option></select>
+<span class="db-authlbl">View by author:</span>
+<button class="db-auth active" data-a="">All</button>
+<button class="db-auth" data-a="J. H. Lee">J. H. Lee</button>
+<button class="db-auth" data-a="K. Son">K. Son</button>
+<span id="db-count"></span>
+</div>
+<div class="db-tablewrap">
+<table id="db-table"><thead><tr>
+<th class="sortable" data-k="year">Year</th>
+<th class="sortable" data-k="type">Type</th>
+<th>Authors</th>
+<th>Title</th>
+<th class="sortable" data-k="venue">Venue</th>
+<th>Vol</th><th>No</th><th>Pages</th>
+</tr></thead><tbody></tbody></table>
+</div>
+</div>
 <div class="pub-section"><h2 class="sec">International Journal Papers</h2><hr class="rule"><ol class="pubs"><li>H. Lee, M. Jung, and <b>K. Son</b>, "Rethinking cross-layer dependency in MPQ: Sparsification with PSD framework," <i>IEEE Signal Processing Letters</i>, vol. 33, pp. 1436–1440, 2026.</li>
 <li>M. Kang, <b>J. H. Lee</b>, and I.-G. Lee, "<a href="https://www.techscience.com/CMES/online/detail/26233">Machine learning-based power allocation for covert communication in LEO satellite–UAV cooperative networks</a>," <i>Computer Modeling in Engineering &amp; Sciences</i>, vol. 147, no. 1, pp. 1–19, 2026.</li>
 <li><b>J. H. Lee</b>, P. Kim, J. Y. Lee, and <b>K. Son</b>, "<a href="https://www.sciencedirect.com/science/article/pii/S2405959525001353">Beamforming for beam-squint effect mitigation in LEO satellite communication systems</a>," <i>ICT Express</i>, vol. 11, no. 6, pp. 1103–1109, 2025.</li>
@@ -124,4 +165,61 @@
 <li><b>K. Son</b>, <b>J. H. Lee</b>, and W. Choi, "ICNet: Index coding neural network based on graph isomorphism."</li></ol></div>
 </main>
 <footer>📍 81 Oedae-ro, Engineering Building, HUFS Global Campus, Yongin 17035, Gyeonggi-do, South Korea</footer>
+<script>
+(function(){
+ var secMap={
+  "International Journal Papers":"Journal",
+  "International Conference Papers":"Conference",
+  "Patents":"Patent",
+  "Domestic Journal Papers (국내 학술지)":"Journal (KR)",
+  "Domestic Conference Papers (국내 학술대회)":"Conference (KR)",
+  "In Preparation / Under Review":"In prep"
+ };
+ var rows=[];
+ document.querySelectorAll('.pub-section').forEach(function(sec){
+   var h=sec.querySelector('h2'); var type=h?(secMap[h.textContent.trim()]||h.textContent.trim()):'';
+   sec.querySelectorAll('li').forEach(function(li){
+     var html=li.innerHTML, text=li.textContent;
+     var parts=text.split('"');
+     var authors=(parts[0]||'').replace(/,\s*$/,'').trim();
+     var authorsHtml=(html.split('"')[0]||'').replace(/,\s*$/,'').trim();
+     var title=(parts[1]||'').replace(/[",.\s]+$/,'').trim();
+     var a=li.querySelector('a'); var link=a?a.getAttribute('href'):'';
+     var iv=li.querySelector('i'); var venue=iv?iv.textContent.trim():'';
+     var rest=parts.slice(2).join('"');
+     if(!venue){ var vm=rest.replace(/^[",\s]+/,'').split(',')[0]; venue=vm?vm.trim():''; }
+     var yr=(rest.match(/(19|20)\d{2}/g)||[]); var year=yr.length?yr[yr.length-1]:'';
+     var vol=(rest.match(/vol\.\s*([\w-]+)/)||[])[1]||'';
+     var no=(rest.match(/no\.\s*([\w-]+)/)||[])[1]||'';
+     var pp=(rest.match(/pp\.\s*([\d–—-]+)/)||[])[1]||'';
+     rows.push({type:type,authors:authors,authorsHtml:authorsHtml,title:title,link:link,venue:venue,year:year,vol:vol,no:no,pp:pp});
+   });
+ });
+ var tbody=document.querySelector('#db-table tbody');
+ var sel=document.querySelector('#db-type');
+ var types=[]; rows.forEach(function(r){if(types.indexOf(r.type)<0)types.push(r.type);});
+ types.forEach(function(t){var o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
+ var q='',ft='',fa='',sortK='year',sortDir=-1;
+ function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+ function render(){
+   var list=rows.filter(function(r){
+     if(ft&&r.type!==ft)return false;
+     if(fa&&r.authors.indexOf(fa)<0)return false;
+     if(q){var s=(r.authors+' '+r.title+' '+r.venue).toLowerCase();if(s.indexOf(q)<0)return false;}
+     return true;
+   });
+   if(sortK){list.sort(function(a,b){var x=a[sortK]||'',y=b[sortK]||'';if(sortK==='year'){x=+x||0;y=+y||0;}if(x<y)return -1*sortDir;if(x>y)return 1*sortDir;return 0;});}
+   tbody.innerHTML=list.map(function(r){
+     var t=r.link?'<a href="'+r.link+'">'+esc(r.title)+'</a>':esc(r.title);
+     return '<tr><td>'+r.year+'</td><td>'+esc(r.type)+'</td><td class="c-auth">'+r.authorsHtml+'</td><td class="c-title">'+t+'</td><td>'+esc(r.venue)+'</td><td>'+esc(r.vol)+'</td><td>'+esc(r.no)+'</td><td>'+esc(r.pp)+'</td></tr>';
+   }).join('');
+   document.querySelector('#db-count').textContent=list.length+' of '+rows.length;
+ }
+ document.querySelector('#db-search').addEventListener('input',function(e){q=e.target.value.toLowerCase().trim();render();});
+ sel.addEventListener('change',function(e){ft=e.target.value;render();});
+ document.querySelectorAll('.db-auth').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('.db-auth').forEach(function(x){x.classList.remove('active');});b.classList.add('active');fa=b.getAttribute('data-a');render();});});
+ document.querySelectorAll('#db-table th.sortable').forEach(function(th){th.addEventListener('click',function(){var k=th.getAttribute('data-k');if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=(k==='year')?-1:1;}render();});});
+ render();
+})();
+</script>
 </body></html>
